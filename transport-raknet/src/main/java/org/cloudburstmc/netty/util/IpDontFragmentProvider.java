@@ -44,9 +44,13 @@ public class IpDontFragmentProvider {
         IP_DONT_FRAGMENT_FALSE_VALUE = ipDontFragmentFalseValue;
     }
 
+    public static boolean isIpDontFragmentSupported() {
+        return IP_DONT_FRAGMENT_OPTION != null;
+    }
+
     @SuppressWarnings("unchecked")
     public static <T> boolean trySet(Channel channel, boolean value) {
-        if (IP_DONT_FRAGMENT_OPTION == null) return false;
+        if (!isIpDontFragmentSupported()) return false;
         boolean success = channel.config().setOption((ChannelOption<T>) IP_DONT_FRAGMENT_OPTION, (T) (value ? IP_DONT_FRAGMENT_TRUE_VALUE : IP_DONT_FRAGMENT_FALSE_VALUE));
         return success ? value : !value;
     }
